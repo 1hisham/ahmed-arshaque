@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUBARIS & FATHIMA — Wedding Invitation</title>
+    <!-- SEO & Styling fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Pinyon+Script&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Falling Petals Canvas -->
+    <canvas id="petals-canvas"></canvas>
+
+    <!-- Audio Player (Hidden Element) -->
+    <audio id="bg-audio" loop preload="auto">
+        <source
+            src="https://cdn.zelebrio.com/zelebrio/af49abaf-6e34-493c-91f1-6db75c2f8330/95394535-5bb1-4cf3-8eaa-2f66579a910b.mp3"
+            type="audio/mp3">
+    </audio>
+
+    <!-- Floating Audio Widget -->
+    <button id="audio-toggle" class="floating-widget hidden" aria-label="Toggle music">
+        <div class="audio-bars">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </button>
+
+    <!-- Floating Editor Settings Widget -->
+    <button id="editor-toggle" class="floating-widget-left" aria-label="Edit Invitation">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+            <path fill="currentColor"
+                d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3-1.07-3-3s1.07-3 3-3 3 1.07 3 3-1.07 3-3 3z" />
+        </svg>
+    </button>
+
+    <!-- 1. LANDING/GATEWAY SCREEN -->
+    <section id="gateway-screen" class="active">
+        <div class="gateway-content">
+            <!-- Bismillah text -->
+            <h2 id="view-bismillah" class="bismillah-text">بِسْمِ ٱللهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</h2>
+
+            <!-- Minimalist Hearts Illustration -->
+            <div class="heart-illustration">
+                <svg viewBox="0 0 100 80" class="heart-svg">
+                    <path d="M 50,30 
+                   C 50,30 38,12 25,12 
+                   C 10,12 0,25 0,40 
+                   C 0,60 30,75 50,80 
+                   C 70,75 100,60 100,40 
+                   C 100,25 90,12 75,12 
+                   C 62,12 50,30 50,30 Z" fill="none" stroke="#5a524b" stroke-width="1.5" stroke-dasharray="3,3" />
+                    <path d="M 45,35 
+                   C 45,35 35,20 25,20 
+                   C 14,20 6,30 6,42 
+                   C 6,58 30,70 45,74 
+                   C 60,70 84,58 84,42 
+                   C 84,30 76,20 65,20 
+                   C 55,20 45,35 45,35 Z" fill="none" stroke="#8a7a6a" stroke-width="1" />
+                </svg>
+            </div>
+
+            <!-- Couple Names -->
+            <h1 class="gateway-names">
+                <span id="gateway-groom">MUBARIS</span>
+                <span class="ampersand">&</span>
+                <span id="gateway-bride">FATHIMA</span>
+            </h1>
+
+            <!-- Action button -->
+            <button id="view-invitation-btn" class="c-btn primary">VIEW INVITATION</button>
+        </div>
+    </section>
+
+    <!-- 2. INVITATION DETAILS SCREEN -->
+    <section id="details-screen" class="hidden">
+        <div class="invitation-container">
+
+            <!-- Top Accent Leaf / Lines -->
+            <div class="top-accent">
+                <div class="line"></div>
+                <span class="leaf-symbol">✿</span>
+                <div class="line"></div>
+            </div>
+
+            <!-- Header Intro -->
+            <p id="view-accent-header" class="accent-title">Save our Date</p>
+
+            <!-- Names header -->
+            <h1 class="invitation-names">
+                <span id="details-groom">MUBARIS</span>
+                <span class="ampersand-main">and</span>
+                <span id="details-bride">FATHIMA</span>
+            </h1>
+
+            <!-- Date display -->
+            <div class="date-container">
+                <p id="view-date" class="wedding-date">JULY 19, 2026</p>
+                <p id="view-time" class="wedding-time">11 AM - 2 PM</p>
+                <a id="calendar-link" href="#" target="_blank" class="accent-link">Add to Calendar →</a>
+            </div>
+
+            <div class="content-divider"></div>
+
+            <!-- Wedding Quote -->
+            <div class="quote-container">
+                <p id="view-quote" class="quote-text">
+                    “As two hearts come together by the will of Allah, we cordially invite you to join us on this
+                    blessed and
+                    joyous occasion...”
+                </p>
+            </div>
+
+            <div class="content-divider"></div>
+
+            <!-- Residence / Venue -->
+            <div class="venue-container">
+                <p id="view-venue-title" class="section-label">OUR RESIDENCE</p>
+                <p id="view-address" class="address-text">HUDA Suresh Road Koyilandy</p>
+                <a id="directions-link" href="#" target="_blank" class="accent-link">Get directions →</a>
+            </div>
+
+            <div class="content-divider"></div>
+
+            <!-- Countdown Widget -->
+            <div class="countdown-section">
+                <p id="view-countdown-title" class="section-label uppercase-spacing">UNTIL WE SAY I DO</p>
+                <div class="countdown-timer">
+                    <div class="timer-box">
+                        <span id="days" class="timer-digits">00</span>
+                        <span class="timer-label">DAYS</span>
+                    </div>
+                    <div class="timer-divider">:</div>
+                    <div class="timer-box">
+                        <span id="hours" class="timer-digits">00</span>
+                        <span class="timer-label">HOURS</span>
+                    </div>
+                    <div class="timer-divider">:</div>
+                    <div class="timer-box">
+                        <span id="minutes" class="timer-digits">00</span>
+                        <span class="timer-label">MINS</span>
+                    </div>
+                    <div class="timer-divider">:</div>
+                    <div class="timer-box">
+                        <span id="seconds" class="timer-digits">00</span>
+                        <span class="timer-label">SECS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Footer Links -->
+            <div class="actions-container">
+                <a id="call-link" href="tel:9037416123" class="c-btn outline">Call</a>
+                <a id="whatsapp-link" href="https://wa.me/9037416123" target="_blank" class="c-btn outline">WhatsApp</a>
+            </div>
+
+            <!-- Branding Footer -->
+            <footer class="invitation-footer">
+                <p>Created with ❤ Zelebrio</p>
+            </footer>
+        </div>
+    </section>
+
+    <!-- 3. CONFIGURATION EDITOR MODAL DRAWER -->
+    <div id="admin-drawer" class="drawer-overlay">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>Edit Invitation</h2>
+                <button id="close-drawer" class="close-btn" aria-label="Close settings">&times;</button>
+            </div>
+
+            <form id="editor-form" class="drawer-form">
+                <!-- Groom and Bride Details -->
+                <fieldset>
+                    <legend>Couple Names</legend>
+                    <div class="form-group">
+                        <label for="edit-groom">Groom Name</label>
+                        <input type="text" id="edit-groom" value="MUBARIS" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-bride">Bride Name</label>
+                        <input type="text" id="edit-bride" value="FATHIMA" required>
+                    </div>
+                </fieldset>
+
+                <!-- Gateway Settings -->
+                <fieldset>
+                    <legend>Gateway Details</legend>
+                    <div class="form-group">
+                        <label for="edit-bismillah">Arabic Text</label>
+                        <input type="text" id="edit-bismillah" value="بِسْمِ ٱللهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ">
+                    </div>
+                </fieldset>
+
+                <!-- Invitation Details -->
+                <fieldset>
+                    <legend>Wedding Schedule</legend>
+                    <div class="form-group">
+                        <label for="edit-accent-header">Header Accent Text</label>
+                        <input type="text" id="edit-accent-header" value="Save our Date">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-date-text">Date Display Text</label>
+                        <input type="text" id="edit-date-text" value="JULY 19, 2026">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-time-text">Time Display Text</label>
+                        <input type="text" id="edit-time-text" value="11 AM - 2 PM">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-countdown-date">Target Date (for Countdown & Calendar)</label>
+                        <input type="datetime-local" id="edit-countdown-date" value="2026-07-19T11:00" required>
+                    </div>
+                </fieldset>
+
+                <!-- Quote Details -->
+                <fieldset>
+                    <legend>Invitation Quote</legend>
+                    <div class="form-group">
+                        <label for="edit-quote">Quote Text</label>
+                        <textarea id="edit-quote"
+                            rows="4">“As two hearts come together by the will of Allah, we cordially invite you to join us on this blessed and joyous occasion...”</textarea>
+                    </div>
+                </fieldset>
+
+                <!-- Location Details -->
+                <fieldset>
+                    <legend>Location & Directions</legend>
+                    <div class="form-group">
+                        <label for="edit-venue-title">Residence/Venue Title</label>
+                        <input type="text" id="edit-venue-title" value="OUR RESIDENCE">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-address">Address Text</label>
+                        <input type="text" id="edit-address" value="HUDA Suresh Road Koyilandy">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-maps-url">Google Maps Directions Link</label>
+                        <input type="url" id="edit-maps-url" value="https://maps.app.goo.gl/k98v1x4LDr8JpBsz6">
+                    </div>
+                </fieldset>
+
+                <!-- Dynamic / Asset Controls -->
+                <fieldset>
+                    <legend>Media & Aesthetics</legend>
+                    <div class="form-group">
+                        <label for="edit-audio-url">Background MP3 Music URL</label>
+                        <input type="url" id="edit-audio-url"
+                            value="https://cdn.zelebrio.com/zelebrio/af49abaf-6e34-493c-91f1-6db75c2f8330/95394535-5bb1-4cf3-8eaa-2f66579a910b.mp3">
+                    </div>
+                    <div class="form-group-row">
+                        <input type="checkbox" id="edit-enable-petals" checked>
+                        <label for="edit-enable-petals">Enable Falling Petals & Leaves</label>
+                    </div>
+                </fieldset>
+
+                <!-- Contact Links -->
+                <fieldset>
+                    <legend>Contact Links</legend>
+                    <div class="form-group">
+                        <label for="edit-phone">Call Button Phone Number</label>
+                        <input type="tel" id="edit-phone" value="9037416123">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-whatsapp">WhatsApp Phone Number</label>
+                        <input type="tel" id="edit-whatsapp" value="9037416123">
+                    </div>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button type="submit" class="c-btn save-btn">Save Changes</button>
+                    <button type="button" id="reset-defaults" class="c-btn reset-btn">Reset Defaults</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

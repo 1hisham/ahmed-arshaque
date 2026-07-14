@@ -1,0 +1,697 @@
+/* ==========================================================================
+   DESIGN SYSTEM & VARIABLES
+   ========================================================================== */
+:root {
+    /* Colors */
+    --bg-primary: #f8f6f3;
+    /* Off-white warm beige */
+    --bg-card: #ffffff;
+    /* Pure white for boxes */
+    --text-main: #332d29;
+    /* Deep brown/charcoal */
+    --text-muted: #6e645e;
+    /* Medium warm brown */
+    --accent-olive: #8c8075;
+    /* Warm taupe / olive grey */
+    --accent-gold: #c3b091;
+    /* Light gold accent */
+    --border-color: #d8d1ca;
+    /* Muted border line */
+    --btn-primary-bg: #4a423d;
+    /* Warm dark grey-brown */
+    --btn-hover-bg: #605650;
+
+    /* Fonts */
+    --font-serif: 'Cormorant Garamond', 'Lora', Georgia, serif;
+    --font-script: 'Pinyon Script', cursive;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Base Headings */
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    color: var(--text-main);
+}
+
+/* Interactive Canvas overlay */
+#petals-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Buttons */
+.c-btn {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}
+
+.c-btn.primary {
+    background-color: var(--btn-primary-bg);
+    color: #fff;
+    border: 1px solid var(--btn-primary-bg);
+    box-shadow: 0 4px 10px rgba(74, 66, 61, 0.15);
+}
+
+.c-btn.primary:hover {
+    background-color: var(--btn-hover-bg);
+    border-color: var(--btn-hover-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(74, 66, 61, 0.25);
+}
+
+.c-btn.outline {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+.c-btn.outline:hover {
+    background-color: var(--bg-card);
+    border-color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+/* Floating Widgets */
+.floating-widget,
+.floating-widget-left {
+    position: fixed;
+    bottom: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: center;
+    aria-hidden: false;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    color: var(--text-main);
+}
+
+.floating-widget:hover,
+.floating-widget-left:hover {
+    transform: scale(1.08);
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.floating-widget {
+    right: 24px;
+}
+
+.floating-widget-left {
+    left: 24px;
+}
+
+.floating-widget.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+}
+
+/* Music Visualizer Bars */
+.audio-bars {
+    display: flex;
+    align-items: flex-end;
+    height: 18px;
+    gap: 3px;
+}
+
+.audio-bars .bar {
+    width: 3px;
+    height: 4px;
+    background-color: var(--text-main);
+    transition: height 0.2s ease;
+}
+
+/* Playing Animation for audio bars */
+.playing .audio-bars .bar {
+    animation: pulse-bar 1s infinite alternate;
+}
+
+.playing .audio-bars .bar:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.playing .audio-bars .bar:nth-child(2) {
+    animation-delay: 0.3s;
+    animation-duration: 0.7s;
+}
+
+.playing .audio-bars .bar:nth-child(3) {
+    animation-delay: 0.2s;
+    animation-duration: 0.8s;
+}
+
+.playing .audio-bars .bar:nth-child(4) {
+    animation-delay: 0s;
+    animation-duration: 0.9s;
+}
+
+@keyframes pulse-bar {
+    0% {
+        height: 4px;
+    }
+
+    100% {
+        height: 18px;
+    }
+}
+
+
+/* ==========================================================================
+   1. LANDING/GATEWAY SCREEN
+   ========================================================================== */
+#gateway-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+    padding: 24px;
+}
+
+#gateway-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.gateway-content {
+    text-align: center;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bismillah-text {
+    font-size: 26px;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.heart-illustration {
+    width: 120px;
+    height: 96px;
+    margin-bottom: 40px;
+}
+
+.heart-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.gateway-names {
+    font-size: 32px;
+    letter-spacing: 0.25em;
+    line-height: 1.4;
+    margin-bottom: 48px;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.gateway-names .ampersand {
+    font-family: var(--font-script);
+    font-size: 40px;
+    text-transform: lowercase;
+    color: var(--accent-olive);
+    letter-spacing: normal;
+    display: block;
+}
+
+
+/* ==========================================================================
+   2. INVITATION DETAILS SCREEN
+   ========================================================================== */
+#details-screen {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    background-color: var(--bg-primary);
+    padding: 70px 24px 80px 24px;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+#details-screen.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.invitation-container {
+    background: var(--bg-card);
+    padding: 48px 30px;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    position: relative;
+}
+
+.top-accent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.top-accent .line {
+    height: 1px;
+    width: 50px;
+    background-color: var(--border-color);
+}
+
+.top-accent .leaf-symbol {
+    color: var(--accent-olive);
+    font-size: 14px;
+}
+
+.accent-title {
+    font-family: var(--font-script);
+    font-size: 38px;
+    color: var(--accent-olive);
+    margin-bottom: 12px;
+}
+
+.invitation-names {
+    font-size: 30px;
+    letter-spacing: 0.18em;
+    line-height: 1.3;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.invitation-names .ampersand-main {
+    font-family: var(--font-script);
+    font-size: 34px;
+    text-transform: lowercase;
+    color: var(--accent-olive);
+    letter-spacing: normal;
+    display: block;
+}
+
+.date-container {
+    margin-top: 10px;
+    margin-bottom: 12px;
+}
+
+.wedding-date {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    letter-spacing: 0.15em;
+    margin-bottom: 4px;
+}
+
+.wedding-time {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.accent-link {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--accent-olive);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.accent-link:hover {
+    border-bottom-color: var(--accent-olive);
+    color: var(--text-main);
+}
+
+.content-divider {
+    width: 40px;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 36px auto;
+}
+
+.quote-container {
+    padding: 0 10px;
+}
+
+.quote-text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+.section-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+}
+
+.uppercase-spacing {
+    letter-spacing: 0.2em;
+}
+
+.address-text {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+
+/* Countdown widget styles */
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+}
+
+.timer-box {
+    min-width: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timer-digits {
+    font-family: var(--font-sans);
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--text-main);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.timer-label {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+}
+
+.timer-divider {
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--border-color);
+    padding-bottom: 14px;
+}
+
+/* Actions */
+.actions-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 36px;
+}
+
+.invitation-footer {
+    margin-top: 48px;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+
+/* ==========================================================================
+   3. CONFIGURATION EDITOR MODAL DRAWER
+   ========================================================================== */
+.drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.drawer-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 440px;
+    height: 100%;
+    background: #ffffff;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-overlay.active .drawer-content {
+    transform: translateX(0);
+}
+
+.drawer-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drawer-header h2 {
+    font-size: 20px;
+    letter-spacing: 0.05em;
+}
+
+.close-btn {
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    line-height: 1;
+    padding: 4px;
+}
+
+.close-btn:hover {
+    color: var(--text-main);
+}
+
+.drawer-form {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+fieldset {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 16px;
+}
+
+legend {
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-olive);
+    padding: 0 8px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.form-group-row label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="tel"],
+input[type="datetime-local"],
+textarea {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--text-muted);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(140, 128, 117, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.save-btn {
+    background-color: #3b7a57;
+    color: #fff;
+    border: 1px solid #3b7a57;
+}
+
+.save-btn:hover {
+    background-color: #2d5d42;
+    border-color: #2d5d42;
+}
+
+.reset-btn {
+    background-color: transparent;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+}
+
+.reset-btn:hover {
+    background-color: #f2dede;
+    border-color: #a94442;
+}
+
+
+/* ==========================================================================
+   RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 500px) {
+    body {
+        background-color: var(--bg-primary);
+    }
+
+    #details-screen {
+        padding: 0;
+        max-width: 100%;
+    }
+
+    .invitation-container {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        padding: 48px 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .drawer-content {
+        max-width: 100%;
+    }
+}
