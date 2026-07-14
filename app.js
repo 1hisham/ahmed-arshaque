@@ -2,13 +2,13 @@
 // DEFAULT SETTINGS & STATE MANAGER
 // ==========================================================================
 const DEFAULT_SETTINGS = {
-    groom: "AHMED ARASHAQUE PP",
-    bride: "FATHIME RIMA",
+    groom: "AHMED ARSHAQUE",
+    bride: "FATHIMA RIMA",
     bismillah: "بِسْمِ ٱللهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
     accentHeader: "Save our Date",
     dateText: "JULY 19, 2026",
     timeText: "11 AM - 2 PM",
-    countdownDate: "2026-07-19T11:00",
+    countdownDate: "2026-08-09T11:00",
     quote: "“As two hearts come together by the will of Allah, we cordially invite you to join us on this blessed and joyous occasion...”",
     venueTitle: "OUR RESIDENCE",
     address: "HUDA Suresh Road Koyilandy",
