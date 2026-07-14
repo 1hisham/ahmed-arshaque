@@ -2,8 +2,8 @@
 // DEFAULT SETTINGS & STATE MANAGER
 // ==========================================================================
 const DEFAULT_SETTINGS = {
-    groom: "MUBARIS",
-    bride: "FATHIMA",
+    groom: "AHMED ARASHAQUE PP",
+    bride: "FATHIME RIMA",
     bismillah: "بِسْمِ ٱللهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
     accentHeader: "Save our Date",
     dateText: "JULY 19, 2026",
