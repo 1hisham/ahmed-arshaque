@@ -6,17 +6,17 @@ const DEFAULT_SETTINGS = {
     bride: "FATHIMA RIMA",
     bismillah: "بِسْمِ ٱللهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
     accentHeader: "Save our Date",
-    dateText: "JULY 19, 2026",
+    dateText: "AUG 09, 2026",
     timeText: "11 AM - 2 PM",
     countdownDate: "2026-08-09T11:00",
     quote: "“As two hearts come together by the will of Allah, we cordially invite you to join us on this blessed and joyous occasion...”",
     venueTitle: "OUR RESIDENCE",
-    address: "HUDA Suresh Road Koyilandy",
-    mapsUrl: "https://maps.app.goo.gl/k98v1x4LDr8JpBsz6",
+    address: "PLAZA CONVENTION CENTER",
+    mapsUrl: "https://maps.app.goo.gl/DpFue5Px6KcyQJPFA?g_st=ic",
     audioUrl: "https://cdn.zelebrio.com/zelebrio/af49abaf-6e34-493c-91f1-6db75c2f8330/95394535-5bb1-4cf3-8eaa-2f66579a910b.mp3",
     enablePetals: true,
-    phone: "9037416123",
-    whatsapp: "9037416123"
+    phone: "9496083275",
+    whatsapp: "9496083275"
 };
 
 let currentSettings = { ...DEFAULT_SETTINGS };
