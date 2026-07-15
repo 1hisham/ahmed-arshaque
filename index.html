@@ -20,7 +20,7 @@
     <canvas id="petals-canvas"></canvas>
 
     <!-- Audio Player (Hidden Element) -->
-    <audio id="bg-audio" loop preload="auto">
+    <audio id="bg-audio" loop preload="none">
         <source
             src="https://cdn.zelebrio.com/zelebrio/af49abaf-6e34-493c-91f1-6db75c2f8330/95394535-5bb1-4cf3-8eaa-2f66579a910b.mp3"
             type="audio/mp3">
@@ -83,6 +83,7 @@
     </section>
 
     <!-- 2. INVITATION DETAILS SCREEN -->
+    <template id="details-template">
     <section id="details-screen" class="hidden">
         <div class="invitation-container">
 
@@ -107,7 +108,7 @@
             <div class="date-container">
                 <p id="view-date" class="wedding-date">JULY 19, 2026</p>
                 <p id="view-time" class="wedding-time">11 AM - 2 PM</p>
-                <a id="calendar-link" href="#" target="_blank" class="accent-link">Add to Calendar →</a>
+                <a id="calendar-link" href="#" target="_blank" class="accent-link">🗓 Add to Calendar <span class="link-arrow">↗</span></a>
             </div>
 
             <div class="content-divider"></div>
@@ -127,7 +128,7 @@
             <div class="venue-container">
                 <p id="view-venue-title" class="section-label">OUR RESIDENCE</p>
                 <p id="view-address" class="address-text">HUDA Suresh Road Koyilandy</p>
-                <a id="directions-link" href="#" target="_blank" class="accent-link">Get directions →</a>
+                <a id="directions-link" href="#" target="_blank" class="accent-link">📍 Get directions <span class="link-arrow">↗</span></a>
             </div>
 
             <div class="content-divider"></div>
@@ -161,7 +162,7 @@
             <!-- Action Footer Links -->
             <div class="actions-container">
                 <a id="call-link" href="tel:9037416123" class="c-btn outline">Call</a>
-                <a id="whatsapp-link" href="https://wa.me/9037416123" target="_blank" class="c-btn outline">WhatsApp</a>
+                <a id="whatsapp-link" href="https://wa.me/9037416123" target="_blank" class="c-btn outline">WhatsApp <span class="link-arrow">↗</span></a>
             </div>
 
             <!-- Branding Footer -->
@@ -170,8 +171,10 @@
             </footer>
         </div>
     </section>
+    </template>
 
     <!-- 3. CONFIGURATION EDITOR MODAL DRAWER -->
+    <template id="admin-drawer-template">
     <div id="admin-drawer" class="drawer-overlay">
         <div class="drawer-content">
             <div class="drawer-header">
@@ -284,6 +287,7 @@
             </form>
         </div>
     </div>
+    </template>
 
     <script src="app.js"></script>
 </body>

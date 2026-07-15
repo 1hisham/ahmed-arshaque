@@ -89,12 +89,37 @@ h4 {
     color: #fff;
     border: 1px solid var(--btn-primary-bg);
     box-shadow: 0 4px 10px rgba(74, 66, 61, 0.15);
+    position: relative;
+    overflow: hidden;
+    animation: premium-glow 3s infinite ease-in-out;
+}
+
+.c-btn.primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    transition: none;
+}
+
+.c-btn.primary:hover::after {
+    animation: shimmer-sweep 1.2s ease-in-out;
 }
 
 .c-btn.primary:hover {
+    animation: none;
     background-color: var(--btn-hover-bg);
     border-color: var(--btn-hover-bg);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.04);
     box-shadow: 0 6px 14px rgba(74, 66, 61, 0.25);
 }
 
@@ -108,6 +133,40 @@ h4 {
     background-color: var(--bg-card);
     border-color: var(--text-main);
     transform: translateY(-1px);
+}
+
+/* Link Arrow & External Indicator Styles */
+.link-arrow {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-left: 4px;
+    font-size: 0.9em;
+}
+
+.accent-link:hover .link-arrow,
+.c-btn.outline:hover .link-arrow {
+    transform: translate(3px, -3px);
+}
+
+@keyframes premium-glow {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 10px rgba(74, 66, 61, 0.15), 0 0 0 0px rgba(195, 176, 145, 0.4);
+    }
+    50% {
+        transform: scale(1.04);
+        box-shadow: 0 6px 14px rgba(74, 66, 61, 0.25), 0 0 0 8px rgba(195, 176, 145, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 10px rgba(74, 66, 61, 0.15), 0 0 0 0px rgba(195, 176, 145, 0);
+    }
+}
+
+@keyframes shimmer-sweep {
+    100% {
+        left: 150%;
+    }
 }
 
 /* Floating Widgets */
@@ -124,7 +183,6 @@ h4 {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     display: flex;
     justify-content: center;
-    aria-hidden: false;
     align-items: center;
     cursor: pointer;
     z-index: 100;

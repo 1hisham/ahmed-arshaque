@@ -25,62 +25,60 @@ let animationFrameId = null;
 
 // Select DOM elements
 const el = {
-    // Screens
+    // Screens always present initially
     gatewayScreen: document.getElementById('gateway-screen'),
-    detailsScreen: document.getElementById('details-screen'),
     viewBtn: document.getElementById('view-invitation-btn'),
-
-    // Custom display fields
     viewBismillah: document.getElementById('view-bismillah'),
     gatewayGroom: document.getElementById('gateway-groom'),
     gatewayBride: document.getElementById('gateway-bride'),
-    detailsGroom: document.getElementById('details-groom'),
-    detailsBride: document.getElementById('details-bride'),
-    viewAccentHeader: document.getElementById('view-accent-header'),
-    viewDate: document.getElementById('view-date'),
-    viewTime: document.getElementById('view-time'),
-    viewQuote: document.getElementById('view-quote'),
-    viewVenueTitle: document.getElementById('view-venue-title'),
-    viewAddress: document.getElementById('view-address'),
-    viewCountdownTitle: document.getElementById('view-countdown-title'),
 
-    // Links
-    calendarLink: document.getElementById('calendar-link'),
-    directionsLink: document.getElementById('directions-link'),
-    callLink: document.getElementById('call-link'),
-    whatsappLink: document.getElementById('whatsapp-link'),
-
-    // Audio
+    // Audio always present
     audio: document.getElementById('bg-audio'),
     audioToggle: document.getElementById('audio-toggle'),
 
-    // Canvas
+    // Canvas always present
     canvas: document.getElementById('petals-canvas'),
 
-    // Drawer
-    editorToggle: document.getElementById('editor-toggle'),
-    adminDrawer: document.getElementById('admin-drawer'),
-    closeDrawer: document.getElementById('close-drawer'),
-    editorForm: document.getElementById('editor-form'),
-    resetDefaults: document.getElementById('reset-defaults'),
+    // Dynamic screens (will be bound in ensureDetailsLoaded)
+    detailsScreen: null,
+    detailsGroom: null,
+    detailsBride: null,
+    viewAccentHeader: null,
+    viewDate: null,
+    viewTime: null,
+    viewQuote: null,
+    viewVenueTitle: null,
+    viewAddress: null,
+    viewCountdownTitle: null,
+    calendarLink: null,
+    directionsLink: null,
+    callLink: null,
+    whatsappLink: null,
 
-    // Inputs
-    editGroom: document.getElementById('edit-groom'),
-    editBride: document.getElementById('edit-bride'),
-    editBismillah: document.getElementById('edit-bismillah'),
-    editAccentHeader: document.getElementById('edit-accent-header'),
-    editDateText: document.getElementById('edit-date-text'),
-    editTimeText: document.getElementById('edit-time-text'),
-    editCountdownDate: document.getElementById('edit-countdown-date'),
-    editQuote: document.getElementById('edit-quote'),
-    editVenueTitle: document.getElementById('edit-venue-title'),
-    editAddress: document.getElementById('edit-address'),
-    editMapsUrl: document.getElementById('edit-maps-url'),
-    editAudioUrl: document.getElementById('edit-audio-url'),
-    editEnablePetals: document.getElementById('edit-enable-petals'),
-    editPhone: document.getElementById('edit-phone'),
-    editWhatsapp: document.getElementById('edit-whatsapp')
+    // Dynamic admin drawer (will be bound in ensureAdminDrawerLoaded)
+    adminDrawer: null,
+    closeDrawer: null,
+    editorForm: null,
+    resetDefaults: null,
+    editGroom: null,
+    editBride: null,
+    editBismillah: null,
+    editAccentHeader: null,
+    editDateText: null,
+    editTimeText: null,
+    editCountdownDate: null,
+    editQuote: null,
+    editVenueTitle: null,
+    editAddress: null,
+    editMapsUrl: null,
+    editAudioUrl: null,
+    editEnablePetals: null,
+    editPhone: null,
+    editWhatsapp: null
 };
+
+let detailsLoaded = false;
+let adminDrawerLoaded = false;
 
 // ==========================================================================
 // LOCAL STORAGE LOGIC
@@ -116,45 +114,55 @@ function resetSettings() {
 }
 
 function applySettingsToUI() {
-    // Apply texts
-    el.viewBismillah.innerHTML = currentSettings.bismillah || "";
-    el.viewBismillah.style.display = currentSettings.bismillah ? 'block' : 'none';
+    // Apply texts to gateway screen (always loaded)
+    if (el.viewBismillah) {
+        el.viewBismillah.innerHTML = currentSettings.bismillah || "";
+        el.viewBismillah.style.display = currentSettings.bismillah ? 'block' : 'none';
+    }
 
-    el.gatewayGroom.textContent = currentSettings.groom;
-    el.gatewayBride.textContent = currentSettings.bride;
-    el.detailsGroom.textContent = currentSettings.groom;
-    el.detailsBride.textContent = currentSettings.bride;
+    if (el.gatewayGroom) el.gatewayGroom.textContent = currentSettings.groom;
+    if (el.gatewayBride) el.gatewayBride.textContent = currentSettings.bride;
 
-    el.viewAccentHeader.textContent = currentSettings.accentHeader;
-    el.viewDate.textContent = currentSettings.dateText;
-    el.viewTime.textContent = currentSettings.timeText;
-    el.viewQuote.textContent = currentSettings.quote;
-    el.viewVenueTitle.textContent = currentSettings.venueTitle;
-    el.viewAddress.textContent = currentSettings.address;
+    if (detailsLoaded) {
+        if (el.detailsGroom) el.detailsGroom.textContent = currentSettings.groom;
+        if (el.detailsBride) el.detailsBride.textContent = currentSettings.bride;
+
+        if (el.viewAccentHeader) el.viewAccentHeader.textContent = currentSettings.accentHeader;
+        if (el.viewDate) el.viewDate.textContent = currentSettings.dateText;
+        if (el.viewTime) el.viewTime.textContent = currentSettings.timeText;
+        if (el.viewQuote) el.viewQuote.textContent = currentSettings.quote;
+        if (el.viewVenueTitle) el.viewVenueTitle.textContent = currentSettings.venueTitle;
+        if (el.viewAddress) el.viewAddress.textContent = currentSettings.address;
+
+        // Apply directions URL
+        if (el.directionsLink) el.directionsLink.href = currentSettings.mapsUrl;
+
+        // Apply communications
+        if (el.callLink) el.callLink.href = `tel:${currentSettings.phone}`;
+        if (el.whatsappLink) el.whatsappLink.href = `https://wa.me/${currentSettings.whatsapp}`;
+
+        // Configure Google Calendar Link
+        updateGoogleCalendarLink();
+
+        // Start or reload countdown timer
+        startCountdownTimer();
+    }
 
     // Set title
     document.title = `${currentSettings.groom} & ${currentSettings.bride} — Wedding Invitation`;
 
-    // Apply directions URL
-    el.directionsLink.href = currentSettings.mapsUrl;
-
-    // Apply communications
-    el.callLink.href = `tel:${currentSettings.phone}`;
-    el.whatsappLink.href = `https://wa.me/${currentSettings.whatsapp}`;
-
     // Configure background music source
-    const currentAudioSource = el.audio.querySelector('source').src;
-    if (currentAudioSource !== currentSettings.audioUrl) {
-        el.audio.src = currentSettings.audioUrl;
-        el.audio.load();
-        // Restart playback if detail screen is already shown
-        if (!el.detailsScreen.classList.contains('hidden') && !el.audio.paused) {
-            el.audio.play().catch(e => console.log("Playback retry failed", e));
+    if (el.audio) {
+        const currentAudioSource = el.audio.querySelector('source').src;
+        if (currentAudioSource !== currentSettings.audioUrl) {
+            el.audio.src = currentSettings.audioUrl;
+            el.audio.load();
+            // Restart playback if detail screen is already shown
+            if (detailsLoaded && !el.detailsScreen.classList.contains('hidden') && !el.audio.paused) {
+                el.audio.play().catch(e => console.log("Playback retry failed", e));
+            }
         }
     }
-
-    // Configure Google Calendar Link
-    updateGoogleCalendarLink();
 
     // Start or Stop Petals animation
     if (currentSettings.enablePetals) {
@@ -162,32 +170,31 @@ function applySettingsToUI() {
     } else {
         stopPetalsAnimation();
     }
-
-    // Start or reload countdown timer
-    startCountdownTimer();
 }
 
 function populateFormFields() {
-    el.editGroom.value = currentSettings.groom;
-    el.editBride.value = currentSettings.bride;
-    el.editBismillah.value = currentSettings.bismillah;
-    el.editAccentHeader.value = currentSettings.accentHeader;
-    el.editDateText.value = currentSettings.dateText;
-    el.editTimeText.value = currentSettings.timeText;
-    el.editCountdownDate.value = currentSettings.countdownDate;
-    el.editQuote.value = currentSettings.quote;
-    el.editVenueTitle.value = currentSettings.venueTitle;
-    el.editAddress.value = currentSettings.address;
-    el.editMapsUrl.value = currentSettings.mapsUrl;
-    el.editAudioUrl.value = currentSettings.audioUrl;
-    el.editEnablePetals.checked = currentSettings.enablePetals;
-    el.editPhone.value = currentSettings.phone;
-    el.editWhatsapp.value = currentSettings.whatsapp;
+    if (!adminDrawerLoaded) return;
+    if (el.editGroom) el.editGroom.value = currentSettings.groom;
+    if (el.editBride) el.editBride.value = currentSettings.bride;
+    if (el.editBismillah) el.editBismillah.value = currentSettings.bismillah;
+    if (el.editAccentHeader) el.editAccentHeader.value = currentSettings.accentHeader;
+    if (el.editDateText) el.editDateText.value = currentSettings.dateText;
+    if (el.editTimeText) el.editTimeText.value = currentSettings.timeText;
+    if (el.editCountdownDate) el.editCountdownDate.value = currentSettings.countdownDate;
+    if (el.editQuote) el.editQuote.value = currentSettings.quote;
+    if (el.editVenueTitle) el.editVenueTitle.value = currentSettings.venueTitle;
+    if (el.editAddress) el.editAddress.value = currentSettings.address;
+    if (el.editMapsUrl) el.editMapsUrl.value = currentSettings.mapsUrl;
+    if (el.editAudioUrl) el.editAudioUrl.value = currentSettings.audioUrl;
+    if (el.editEnablePetals) el.editEnablePetals.checked = currentSettings.enablePetals;
+    if (el.editPhone) el.editPhone.value = currentSettings.phone;
+    if (el.editWhatsapp) el.editWhatsapp.value = currentSettings.whatsapp;
 }
 
 // Format UTC Dates for Google Calendar URL: YYYYMMDDTHHmmSSZ
 function updateGoogleCalendarLink() {
     try {
+        if (!el.calendarLink) return;
         const startDate = new Date(currentSettings.countdownDate);
         if (isNaN(startDate.getTime())) return;
 
@@ -391,28 +398,74 @@ function pauseAudio() {
 // ==========================================================================
 // INTERACTIVE FLOW HANDLERS (VIEW INVITATION, ADMIN PANEL)
 // ==========================================================================
-function initAppFlow() {
-    // Transition Landing to Details screen
-    el.viewBtn.addEventListener('click', () => {
-        // Fade out gateway
-        el.gatewayScreen.classList.add('hidden');
+function ensureDetailsLoaded() {
+    if (detailsLoaded) return;
 
-        // Frame Details transition
-        el.detailsScreen.classList.remove('hidden');
-        el.detailsScreen.scrollIntoView({ behavior: 'smooth' });
+    const template = document.getElementById('details-template');
+    if (template) {
+        const clone = template.content.cloneNode(true);
+        // Insert details screen into body, right after gateway screen
+        el.gatewayScreen.parentNode.insertBefore(clone, el.gatewayScreen.nextSibling);
+    }
 
-        // Play Background Audio
-        playAudio();
+    // Bind details elements
+    el.detailsScreen = document.getElementById('details-screen');
+    el.detailsGroom = document.getElementById('details-groom');
+    el.detailsBride = document.getElementById('details-bride');
+    el.viewAccentHeader = document.getElementById('view-accent-header');
+    el.viewDate = document.getElementById('view-date');
+    el.viewTime = document.getElementById('view-time');
+    el.viewQuote = document.getElementById('view-quote');
+    el.viewVenueTitle = document.getElementById('view-venue-title');
+    el.viewAddress = document.getElementById('view-address');
+    el.viewCountdownTitle = document.getElementById('view-countdown-title');
+    el.calendarLink = document.getElementById('calendar-link');
+    el.directionsLink = document.getElementById('directions-link');
+    el.callLink = document.getElementById('call-link');
+    el.whatsappLink = document.getElementById('whatsapp-link');
 
-        // Show Mute floating widget
-        el.audioToggle.classList.remove('hidden');
-    });
+    detailsLoaded = true;
+}
 
-    // Drawer handlers
-    el.editorToggle.addEventListener('click', () => {
-        populateFormFields();
-        el.adminDrawer.classList.add('active');
-    });
+function ensureAdminDrawerLoaded() {
+    if (adminDrawerLoaded) return;
+
+    const template = document.getElementById('admin-drawer-template');
+    if (template) {
+        const clone = template.content.cloneNode(true);
+        document.body.appendChild(clone);
+    }
+
+    // Bind drawer elements
+    el.adminDrawer = document.getElementById('admin-drawer');
+    el.closeDrawer = document.getElementById('close-drawer');
+    el.editorForm = document.getElementById('editor-form');
+    el.resetDefaults = document.getElementById('reset-defaults');
+
+    // Bind inputs
+    el.editGroom = document.getElementById('edit-groom');
+    el.editBride = document.getElementById('edit-bride');
+    el.editBismillah = document.getElementById('edit-bismillah');
+    el.editAccentHeader = document.getElementById('edit-accent-header');
+    el.editDateText = document.getElementById('edit-date-text');
+    el.editTimeText = document.getElementById('edit-time-text');
+    el.editCountdownDate = document.getElementById('edit-countdown-date');
+    el.editQuote = document.getElementById('edit-quote');
+    el.editVenueTitle = document.getElementById('edit-venue-title');
+    el.editAddress = document.getElementById('edit-address');
+    el.editMapsUrl = document.getElementById('edit-maps-url');
+    el.editAudioUrl = document.getElementById('edit-audio-url');
+    el.editEnablePetals = document.getElementById('edit-enable-petals');
+    el.editPhone = document.getElementById('edit-phone');
+    el.editWhatsapp = document.getElementById('edit-whatsapp');
+
+    initDrawerHandlers();
+
+    adminDrawerLoaded = true;
+}
+
+function initDrawerHandlers() {
+    if (!el.closeDrawer) return;
 
     el.closeDrawer.addEventListener('click', () => {
         el.adminDrawer.classList.remove('active');
@@ -458,6 +511,42 @@ function initAppFlow() {
             el.adminDrawer.classList.remove('active');
         }
     });
+}
+
+function initAppFlow() {
+    // Transition Landing to Details screen
+    if (el.viewBtn) {
+        el.viewBtn.addEventListener('click', () => {
+            // Lazy load the details screen to DOM
+            ensureDetailsLoaded();
+
+            // Populate the details screen fields with current settings
+            applySettingsToUI();
+
+            // Fade out gateway
+            el.gatewayScreen.classList.add('hidden');
+
+            // Frame Details transition
+            el.detailsScreen.classList.remove('hidden');
+            el.detailsScreen.scrollIntoView({ behavior: 'smooth' });
+
+            // Play Background Audio
+            playAudio();
+
+            // Show Mute floating widget
+            el.audioToggle.classList.remove('hidden');
+        });
+    }
+
+    // Check for editor-toggle in DOM
+    const editorToggle = document.getElementById('editor-toggle');
+    if (editorToggle) {
+        editorToggle.addEventListener('click', () => {
+            ensureAdminDrawerLoaded();
+            populateFormFields();
+            el.adminDrawer.classList.add('active');
+        });
+    }
 }
 
 
